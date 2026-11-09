@@ -1,0 +1,14 @@
+# R 工作階段暫存檔（不需要上傳）
+.RData
+.Rhistory
+.Rapp.history
+.Rproj.user/
+*.Rproj
+
+# 系統檔
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Word 開啟時產生的暫存檔
+~$*

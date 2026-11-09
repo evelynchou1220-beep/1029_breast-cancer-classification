@@ -1,0 +1,139 @@
+作業 01：乳癌良性與惡性分類
+資料：data/HW01_Breast_Cancer_Data.csv
+總樣本：569；訓練：454；測試：115
+類別分布：
+y
+  B   M 
+357 212 
+y
+   B    M 
+62.7 37.3 
+遺漏值總數：0（訓練 0，測試 0）
+
+重要變數分組摘要：
+             Variable Class   n     Mean      SD   Median       Q1       Q3
+          mean_radius     B 357 12.14652 1.78051 12.20000 11.08000 13.37000
+          mean_radius     M 212 17.46283 3.20397 17.32500 15.07500 19.59000
+       mean_concavity     B 357  0.04606 0.04344  0.03709  0.02031  0.05999
+       mean_concavity     M 212  0.16077 0.07502  0.15135  0.10952  0.20305
+         worst_radius     B 357 13.37980 1.98137 13.35000 12.08000 14.80000
+         worst_radius     M 212 21.13481 4.28357 20.59000 17.73000 23.80750
+ worst_concave_points     B 357  0.07444 0.03580  0.07431  0.05104  0.09749
+ worst_concave_points     M 212  0.18224 0.04631  0.18200  0.15275  0.21068
+
+|r| > 0.9 的特徵對數： 21 
+           Var1            Var2      r
+    mean_radius  mean_perimeter 0.9979
+   worst_radius worst_perimeter 0.9937
+    mean_radius       mean_area 0.9874
+ mean_perimeter       mean_area 0.9865
+   worst_radius      worst_area 0.9840
+
+前五個 PC 個別解釋變異： 44.27%, 18.81%, 9.40%, 6.38%, 5.68% 
+前五個 PC 累積解釋變異： 84.54% 
+Linear SVM 最佳 cost： 10 
+RBF-SVM 最佳 cost/gamma： 100 / 0.01 
+
+SVM 五折 CV 結果（訓練集內）：
+ kernel  cost gamma Accuracy Sensitivity Specificity Precision     F1 BalancedAccuracy
+ linear   0.1  0.20   0.9670      0.9408      0.9825    0.9695 0.9550           0.9616
+ linear   1.0  0.20   0.9648      0.9527      0.9719    0.9527 0.9527           0.9623
+ linear  10.0  0.20   0.9692      0.9586      0.9754    0.9586 0.9586           0.9670
+ linear 100.0  0.20   0.9692      0.9586      0.9754    0.9586 0.9586           0.9670
+ radial   0.1  0.01   0.9383      0.8343      1.0000    1.0000 0.9097           0.9172
+ radial   1.0  0.01   0.9670      0.9290      0.9895    0.9812 0.9544           0.9592
+ radial  10.0  0.01   0.9670      0.9467      0.9789    0.9639 0.9552           0.9628
+ radial 100.0  0.01   0.9648      0.9586      0.9684    0.9474 0.9529           0.9635
+ radial   0.1  0.10   0.9471      0.9053      0.9719    0.9503 0.9273           0.9386
+ radial   1.0  0.10   0.9648      0.9527      0.9719    0.9527 0.9527           0.9623
+ radial  10.0  0.10   0.9471      0.9349      0.9544    0.9240 0.9294           0.9446
+ radial 100.0  0.10   0.9317      0.9053      0.9474    0.9107 0.9080           0.9263
+ radial   0.1  1.00   0.6278      0.0000      1.0000        NA     NA           0.5000
+ radial   1.0  1.00   0.8260      0.5680      0.9789    0.9412 0.7085           0.7735
+ radial  10.0  1.00   0.8348      0.6154      0.9649    0.9123 0.7350           0.7901
+ radial 100.0  1.00   0.8348      0.6154      0.9649    0.9123 0.7350           0.7901
+  FN FP
+  10  5
+   8  8
+   7  7
+   7  7
+  28  0
+  12  3
+   9  6
+   7  9
+  16  8
+   8  8
+  11 13
+  16 15
+ 169  0
+  73  6
+  65 10
+  65 10
+
+老師預設參數與調參後比較（訓練集五折 CV）：
+                    Setting cost gamma BalancedAccuracy Accuracy Sensitivity Specificity
+ Linear SVM teacher default    1  0.20           0.9623   0.9648      0.9527      0.9719
+    RBF-SVM teacher default    1  0.20           0.9476   0.9493      0.9408      0.9544
+           Linear SVM tuned   10  0.20           0.9670   0.9692      0.9586      0.9754
+              RBF-SVM tuned  100  0.01           0.9635   0.9648      0.9586      0.9684
+ FN FP
+  8  8
+ 10 13
+  7  7
+  7  9
+
+獨立測試集結果：
+     Method Accuracy Sensitivity Specificity Precision     F1 BalancedAccuracy TN FP FN
+        LDA   0.9826      0.9535      1.0000    1.0000 0.9762           0.9767 72  0  2
+        QDA   0.9826      0.9767      0.9861    0.9767 0.9767           0.9814 71  1  1
+ SVM_Linear   0.9826      0.9767      0.9861    0.9767 0.9767           0.9814 71  1  1
+    SVM_RBF   0.9913      0.9767      1.0000    1.0000 0.9882           0.9884 72  0  1
+ TP
+ 41
+ 42
+ 42
+ 42
+
+LDA
+      Predicted
+Actual  B  M
+     B 72  0
+     M  2 41
+
+QDA
+      Predicted
+Actual  B  M
+     B 71  1
+     M  1 42
+
+SVM_Linear
+      Predicted
+Actual  B  M
+     B 71  1
+     M  1 42
+
+SVM_RBF
+      Predicted
+Actual  B  M
+     B 72  0
+     M  1 42
+
+QDA 共變異數條件數：
+                        Space Params_per_class    Cond_B    Cond_M
+ Standardized raw 30 features              465 1.677e+05 51459.137
+                  First 5 PCs               15 7.056e+00     9.325
+
+QDA 不同 PC 數的訓練集五折 CV：
+ n_PC Accuracy Sensitivity Specificity BalancedAccuracy FN FP
+    2   0.9427      0.8935      0.9719           0.9327 18  8
+    3   0.9405      0.8876      0.9719           0.9298 19  8
+    5   0.9537      0.9290      0.9684           0.9487 12  9
+   10   0.9604      0.9408      0.9719           0.9564 10  8
+   15   0.9559      0.9408      0.9649           0.9529 10 10
+   20   0.9515      0.9349      0.9614           0.9482 11 11
+   30   0.9383      0.9290      0.9439           0.9364 12 16
+
+M 為陽性。False Negative 是實際惡性但預測為良性。
+此分析是統計教學，不能作為臨床診斷工具。 
+
+完成。所有輸出位於 results/。
